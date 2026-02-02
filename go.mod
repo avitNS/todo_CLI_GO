@@ -1,3 +1,3 @@
-module github.com/avitNS/todo_CLI_GO
+module todo
 
 go 1.25.5

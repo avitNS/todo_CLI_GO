@@ -3,6 +3,7 @@ package storage
 import (
 	"encoding/json"
 	"os"
+	"todo/internal/model"
 )
 
 type FileStorage struct {
@@ -13,17 +14,17 @@ func NewFileStorage(path string) *FileStorage {
 	return &FileStorage{path: path}
 }
 
-func (file *FileStorage) loadTasks() ([]Task, error) {
+func (file *FileStorage) loadTasks() ([]model.Task, error) {
 
 	f, err := os.ReadFile(file.path)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return []Task{}, nil
+			return []model.Task{}, nil
 		}
 		return nil, err
 	}
 
-	var tasks []Task
+	var tasks []model.Task
 	err = json.Unmarshal(f, &tasks)
 	if err != nil {
 		return nil, err
@@ -31,7 +32,7 @@ func (file *FileStorage) loadTasks() ([]Task, error) {
 	return tasks, nil
 }
 
-func (file *FileStorage) saveTasks(tasks []Task) error {
+func (file *FileStorage) saveTasks(tasks []model.Task) error {
 
 	buf, err := json.MarshalIndent(tasks, "", "	")
 	if err != nil {

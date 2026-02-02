@@ -3,9 +3,10 @@ package app
 import (
 	"fmt"
 	"time"
+	"todo/internal/model"
 )
 
-func listTask(tasks []Task) error {
+func listTask(tasks []model.Task) error {
 	if len(tasks) == 0 {
 		fmt.Println("No tasks")
 		return nil
@@ -22,7 +23,7 @@ func listTask(tasks []Task) error {
 	return nil
 }
 
-func addTask(tasks []Task, title string) ([]Task, error) {
+func addTask(tasks []model.Task, title string) ([]model.Task, error) {
 	if title == "" {
 		return nil, fmt.Errorf("Title is necessary")
 	}
@@ -34,7 +35,7 @@ func addTask(tasks []Task, title string) ([]Task, error) {
 		}
 	}
 
-	tasks = append(tasks, Task{
+	tasks = append(tasks, model.Task{
 		ID:      maxID + 1,
 		Title:   title,
 		Done:    false,
@@ -44,7 +45,7 @@ func addTask(tasks []Task, title string) ([]Task, error) {
 	return tasks, nil
 }
 
-func removeTask(tasks []Task, id int) ([]Task, error) {
+func removeTask(tasks []model.Task, id int) ([]model.Task, error) {
 	if id <= 0 {
 		return nil, fmt.Errorf("ID is incorrect")
 	}
@@ -59,7 +60,7 @@ func removeTask(tasks []Task, id int) ([]Task, error) {
 	return tasks, fmt.Errorf("ID not found")
 }
 
-func doneTask(tasks []Task, id int) ([]Task, error) {
+func doneTask(tasks []model.Task, id int) ([]model.Task, error) {
 	if id <= 0 {
 		return nil, fmt.Errorf("ID is incorrect")
 	}

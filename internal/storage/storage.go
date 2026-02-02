@@ -1,6 +1,8 @@
 package storage
 
+import "todo/internal/model"
+
 type Storage interface {
-	Add(tasks []Task) error
-	List() ([]Task, error)
+	Add(tasks []model.Task) error
+	List() ([]model.Task, error)
 }
