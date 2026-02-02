@@ -5,9 +5,17 @@ import (
 	"os"
 )
 
-func loadTasks() ([]Task, error) {
+type FileStorage struct {
+	path string
+}
 
-	f, err := os.ReadFile(JsonPath)
+func NewFileStorage(path string) *FileStorage {
+	return &FileStorage{path: path}
+}
+
+func (file *FileStorage) loadTasks() ([]Task, error) {
+
+	f, err := os.ReadFile(file.path)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return []Task{}, nil
@@ -23,19 +31,19 @@ func loadTasks() ([]Task, error) {
 	return tasks, nil
 }
 
-func saveTasks(tasks []Task) error {
+func (file *FileStorage) saveTasks(tasks []Task) error {
 
 	buf, err := json.MarshalIndent(tasks, "", "	")
 	if err != nil {
 		return err
 	}
 
-	tmp := JsonPath + ".tmp"
+	tmp := file.path + ".tmp"
 	if err := os.WriteFile(tmp, buf, 0644); err != nil {
 		return err
 	}
 
-	if err := os.Rename(tmp, JsonPath); err != nil {
+	if err := os.Rename(tmp, file.path); err != nil {
 		return err
 	}
 
