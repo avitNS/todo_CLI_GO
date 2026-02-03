@@ -1,10 +1,12 @@
-package main
+package parser
 
 import (
 	"errors"
 	"flag"
 	"fmt"
 	"os"
+	"todo/internal/app"
+	"todo/internal/commands"
 )
 
 var (
@@ -13,7 +15,7 @@ var (
 	ErrMissingID      = errors.New("missing ID")
 )
 
-func parseAdd(args []string) (Command, error) {
+func parseAdd(args []string) (app.Command, error) {
 	if len(args) == 0 {
 		return nil, ErrMissingTitle
 	}
@@ -33,11 +35,11 @@ func parseAdd(args []string) (Command, error) {
 		return nil, ErrMissingTitle
 	}
 
-	return &AddCommand{Title: title}, nil
+	return &commands.AddCommand{Title: title}, nil
 
 }
 
-func parseRemove(args []string) (Command, error) {
+func parseRemove(args []string) (app.Command, error) {
 	if len(args) == 0 {
 		return nil, ErrMissingID
 	}
@@ -54,11 +56,11 @@ func parseRemove(args []string) (Command, error) {
 		return nil, ErrMissingID
 	}
 
-	return &RemoveCommand{ID: id}, nil
+	return &commands.RemoveCommand{ID: id}, nil
 
 }
 
-func parseDone(args []string) (Command, error) {
+func parseDone(args []string) (app.Command, error) {
 	if len(args) == 0 {
 		return nil, ErrMissingID
 	}
@@ -75,10 +77,10 @@ func parseDone(args []string) (Command, error) {
 		return nil, ErrMissingID
 	}
 
-	return &DoneCommand{ID: id}, nil
+	return &commands.DoneCommand{ID: id}, nil
 }
 
-func parseArgs(args []string) (Command, error) {
+func parseArgs(args []string) (app.Command, error) {
 
 	if len(args) == 0 {
 		return nil, ErrUnknownCommand
@@ -99,7 +101,7 @@ func parseArgs(args []string) (Command, error) {
 		return parseRemove(args[1:])
 
 	case "list":
-		return &ListCommand{}, nil
+		return &commands.ListCommand{}, nil
 
 	default:
 		return nil, ErrUnknownCommand
