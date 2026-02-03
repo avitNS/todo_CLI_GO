@@ -80,7 +80,7 @@ func parseDone(args []string) (app.Command, error) {
 	return &commands.DoneCommand{ID: id}, nil
 }
 
-func parseArgs(args []string) (app.Command, error) {
+func ParseArgs(args []string) (app.Command, error) {
 
 	if len(args) == 0 {
 		return nil, ErrUnknownCommand
