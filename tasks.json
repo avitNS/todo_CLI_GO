@@ -2,61 +2,7 @@
 	{
 		"ID": 1,
 		"Title": "test",
-		"Done": true,
-		"Created": "2026-01-11T14:40:01.475605812+03:00"
-	},
-	{
-		"ID": 2,
-		"Title": "test2",
-		"Done": true,
-		"Created": "2026-01-11T14:58:38.261203227+03:00"
-	},
-	{
-		"ID": 5,
-		"Title": "New task",
-		"Done": true,
-		"Created": "2026-01-22T00:31:00.197545504+03:00"
-	},
-	{
-		"ID": 6,
-		"Title": "one",
 		"Done": false,
-		"Created": "2026-01-22T00:32:30.124081613+03:00"
-	},
-	{
-		"ID": 7,
-		"Title": "one two three",
-		"Done": false,
-		"Created": "2026-01-22T00:32:57.260578698+03:00"
-	},
-	{
-		"ID": 8,
-		"Title": "New task",
-		"Done": true,
-		"Created": "2026-01-22T01:09:41.810407884+03:00"
-	},
-	{
-		"ID": 9,
-		"Title": "New1",
-		"Done": false,
-		"Created": "2026-01-23T00:37:49.470063586+03:00"
-	},
-	{
-		"ID": 10,
-		"Title": "test",
-		"Done": false,
-		"Created": "2026-01-24T22:02:15.200414943+03:00"
-	},
-	{
-		"ID": 11,
-		"Title": "test",
-		"Done": true,
-		"Created": "2026-01-24T22:02:39.502027101+03:00"
-	},
-	{
-		"ID": 13,
-		"Title": "test",
-		"Done": false,
-		"Created": "2026-02-02T19:56:58.023868602+03:00"
+		"Created": "2026-02-07T16:22:49.660461749+03:00"
 	}
 ]

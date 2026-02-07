@@ -17,7 +17,7 @@ func main() {
 
 	cmd, err := parser.ParseArgs(os.Args[1:])
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("err: %v\n", err)
 		os.Exit(1)
 	}
 	if err := app.Execute(cmd); err != nil {
