@@ -14,7 +14,7 @@ func NewFileStorage(path string) *FileStorage {
 	return &FileStorage{path: path}
 }
 
-func (file *FileStorage) List() ([]model.Task, error) {
+func (file *FileStorage) Load() ([]model.Task, error) {
 
 	f, err := os.ReadFile(file.path)
 	if err != nil {
@@ -32,7 +32,7 @@ func (file *FileStorage) List() ([]model.Task, error) {
 	return tasks, nil
 }
 
-func (file *FileStorage) Add(tasks []model.Task) error {
+func (file *FileStorage) Save(tasks []model.Task) error {
 
 	buf, err := json.MarshalIndent(tasks, "", "	")
 	if err != nil {

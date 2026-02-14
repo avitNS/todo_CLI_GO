@@ -14,6 +14,35 @@ var (
 	ErrMissingID      = errors.New("missing ID")
 )
 
+func ParseArgs(args []string) (app.Command, error) {
+
+	if len(args) == 0 {
+		return nil, ErrUnknownCommand
+	}
+
+	if len(args) > 0 && args[0] == os.Args[0] {
+		args = args[1:]
+	}
+
+	switch args[0] {
+	case "add":
+		return parseAdd(args[1:])
+
+	case "done":
+		return parseDone(args[1:])
+
+	case "remove":
+		return parseRemove(args[1:])
+
+	case "list":
+		return &commands.ListCommand{}, nil
+
+	default:
+		return nil, ErrUnknownCommand
+	}
+
+}
+
 func parseAdd(args []string) (app.Command, error) {
 	if len(args) == 0 {
 		return nil, ErrMissingTitle
@@ -77,33 +106,4 @@ func parseDone(args []string) (app.Command, error) {
 	}
 
 	return &commands.DoneCommand{ID: id}, nil
-}
-
-func ParseArgs(args []string) (app.Command, error) {
-
-	if len(args) == 0 {
-		return nil, ErrUnknownCommand
-	}
-
-	if len(args) > 0 && args[0] == os.Args[0] {
-		args = args[1:]
-	}
-
-	switch args[0] {
-	case "add":
-		return parseAdd(args[1:])
-
-	case "done":
-		return parseDone(args[1:])
-
-	case "remove":
-		return parseRemove(args[1:])
-
-	case "list":
-		return &commands.ListCommand{}, nil
-
-	default:
-		return nil, ErrUnknownCommand
-	}
-
 }

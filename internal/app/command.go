@@ -1,7 +1,9 @@
 package app
 
-import "todo/internal/model"
+import (
+	"todo/internal/storage"
+)
 
 type Command interface {
-	Execute(tasks []model.Task) ([]model.Task, bool, error)
+	Execute(repo storage.TaskRepository) error
 }

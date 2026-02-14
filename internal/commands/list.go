@@ -2,14 +2,21 @@ package commands
 
 import (
 	"fmt"
-	"todo/internal/model"
+	"todo/internal/storage"
 )
 
 type ListCommand struct{}
 
-func (c *ListCommand) Execute(tasks []model.Task) ([]model.Task, bool, error) {
+func (c *ListCommand) Execute(repo storage.TaskRepository) error {
+
+	tasks, err := repo.Load()
+	if err != nil {
+		return err
+	}
+
 	if len(tasks) == 0 {
-		return nil, false, fmt.Errorf("No tasks")
+		fmt.Printf("No tasks\n")
+		return nil
 	}
 
 	for _, t := range tasks {
@@ -18,7 +25,8 @@ func (c *ListCommand) Execute(tasks []model.Task) ([]model.Task, bool, error) {
 		if t.Done {
 			done = "[x]"
 		}
-		fmt.Printf("%s %d. %s\n", done, t.ID, t.Title)
+		fmt.Printf("%d %v %v\n", t.ID, done, t.Title)
 	}
-	return nil, false, nil
+
+	return nil
 }

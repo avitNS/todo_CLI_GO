@@ -1,24 +1,33 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
-	"todo/internal/model"
+	"todo/internal/storage"
 )
 
 type DoneCommand struct {
 	ID int
 }
 
-func (cmd *DoneCommand) Execute(tasks []model.Task) ([]model.Task, bool, error) {
+func (cmd *DoneCommand) Execute(repo storage.TaskRepository) error {
 	if cmd.ID <= 0 {
-		return nil, false, fmt.Errorf("ID is incorrect")
+		fmt.Printf("ID is incorrect\n")
+		return errors.New("ID is incorrect")
+	}
+
+	tasks, err := repo.Load()
+	if err != nil {
+		return err
 	}
 
 	for i, t := range tasks {
 		if t.ID == cmd.ID {
 			tasks[i].Done = true
-			return tasks, true, nil
+			if err = repo.Save(tasks); err != nil {
+				return err
+			}
 		}
 	}
-	return nil, false, nil
+	return nil
 }

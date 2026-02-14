@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log/slog"
 	"os"
 	"todo/internal/app"
 	"todo/internal/config"
@@ -10,11 +10,11 @@ import (
 )
 
 func main() {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 
 	cfg, commandArgs, err := config.Load(os.Args[1:])
-
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		logger.Error("Failed config", "error", err)
 		os.Exit(1)
 	}
 
@@ -23,11 +23,12 @@ func main() {
 
 	cmd, err := parser.ParseArgs(commandArgs)
 	if err != nil {
-		fmt.Printf("err: %v\n", err)
+		logger.Error("Failed command", "error", err)
 		os.Exit(1)
 	}
+
 	if err := app.Execute(cmd); err != nil {
-		fmt.Println(err)
+		logger.Error("Execute error", "error", err)
 		os.Exit(1)
 	}
 

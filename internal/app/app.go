@@ -5,27 +5,18 @@ import (
 )
 
 type App struct {
-	storage storage.Storage
+	repo storage.TaskRepository
 }
 
-func NewApp(storage storage.Storage) *App {
-	return &App{storage: storage}
+func NewApp(repo storage.TaskRepository) *App {
+	return &App{repo: repo}
 }
 
 func (app *App) Execute(cmd Command) error {
-	tasks, err := app.storage.List()
 
+	err := cmd.Execute(app.repo)
 	if err != nil {
 		return err
-	}
-
-	tasks, mutated, err := cmd.Execute(tasks)
-	if err != nil {
-		return err
-	}
-
-	if mutated {
-		return app.storage.Add(tasks)
 	}
 
 	return nil

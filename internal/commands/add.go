@@ -1,21 +1,29 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 	"time"
 	"todo/internal/model"
+	"todo/internal/storage"
 )
 
 type AddCommand struct {
 	Title string
 }
 
-func (cmd *AddCommand) Execute(tasks []model.Task) ([]model.Task, bool, error) {
+func (cmd *AddCommand) Execute(repo storage.TaskRepository) error {
 
 	if cmd.Title == "" {
-		return nil, false, fmt.Errorf("Title is necessary")
+		fmt.Printf("Title is missing\n")
+		return errors.New("Title is missing")
 	}
 
+	tasks, err := repo.Load()
+
+	if err != nil {
+		return err
+	}
 	maxID := 0
 	for _, t := range tasks {
 		if t.ID > maxID {
@@ -30,5 +38,10 @@ func (cmd *AddCommand) Execute(tasks []model.Task) ([]model.Task, bool, error) {
 		Created: time.Now(),
 	})
 
-	return tasks, true, nil
+	if err = repo.Save(tasks); err != nil {
+		return err
+	}
+
+	return nil
+
 }
