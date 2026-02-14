@@ -4,18 +4,24 @@ import (
 	"fmt"
 	"os"
 	"todo/internal/app"
+	"todo/internal/config"
 	"todo/internal/parser"
 	"todo/internal/storage"
 )
 
-const JsonPath = "tasks.json"
-
 func main() {
 
-	st := storage.NewFileStorage(JsonPath)
+	cfg, commandArgs, err := config.Load(os.Args[1:])
+
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		os.Exit(1)
+	}
+
+	st := storage.NewFileStorage(cfg.StoragePath)
 	app := app.NewApp(st)
 
-	cmd, err := parser.ParseArgs(os.Args[1:])
+	cmd, err := parser.ParseArgs(commandArgs)
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
 		os.Exit(1)
