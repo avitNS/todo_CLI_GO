@@ -3,7 +3,6 @@ package parser
 import (
 	"errors"
 	"flag"
-	"fmt"
 	"os"
 	"todo/internal/app"
 	"todo/internal/commands"
@@ -20,7 +19,7 @@ func parseAdd(args []string) (app.Command, error) {
 		return nil, ErrMissingTitle
 	}
 
-	fmt.Println(args)
+	// fmt.Println(args)
 
 	var title string
 

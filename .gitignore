@@ -1,2 +1,6 @@
 *_test.go
 *.json
+*.exe
+*.dll
+*.bin
+*.out
