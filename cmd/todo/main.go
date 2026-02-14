@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log/slog"
 	"os"
 	"todo/internal/app"
@@ -29,6 +30,7 @@ func main() {
 	}
 
 	if err := app.Execute(cmd); err != nil {
+		fmt.Printf("Error: %v\n", err)
 		logger.Error("Failed execute", "error", err)
 		os.Exit(1)
 	}

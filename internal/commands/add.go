@@ -2,7 +2,6 @@ package commands
 
 import (
 	"errors"
-	"fmt"
 	"time"
 	"todo/internal/model"
 	"todo/internal/storage"
@@ -15,7 +14,6 @@ type AddCommand struct {
 func (cmd *AddCommand) Execute(repo storage.TaskRepository) error {
 
 	if cmd.Title == "" {
-		fmt.Printf("Title is missing\n")
 		return errors.New("Title is missing")
 	}
 

@@ -2,7 +2,6 @@ package commands
 
 import (
 	"errors"
-	"fmt"
 	"todo/internal/storage"
 )
 
@@ -12,7 +11,6 @@ type RemoveCommand struct {
 
 func (cmd RemoveCommand) Execute(repo storage.TaskRepository) error {
 	if cmd.ID <= 0 {
-		fmt.Printf("ID is incorrect\n")
 		return errors.New("ID is incorrect")
 	}
 
