@@ -19,6 +19,7 @@ func main() {
 	}
 
 	st := storage.NewFileStorage(cfg.StoragePath)
+
 	app := app.NewApp(st)
 
 	cmd, err := parser.ParseArgs(commandArgs)
@@ -28,7 +29,7 @@ func main() {
 	}
 
 	if err := app.Execute(cmd); err != nil {
-		logger.Error("Execute error", "error", err)
+		logger.Error("Failed execute", "error", err)
 		os.Exit(1)
 	}
 
