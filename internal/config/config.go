@@ -3,11 +3,9 @@ package config
 import (
 	"flag"
 	"os"
-	"todo/internal/app"
 )
 
 type Config struct {
-	Command     app.Command
 	StoragePath string
 }
 
