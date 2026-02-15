@@ -2,10 +2,15 @@ package commands
 
 import (
 	"fmt"
+	"todo/internal/app"
 	"todo/internal/storage"
 )
 
 type ListCommand struct{}
+
+func NewListCommand(args []string) (app.Command, error) {
+	return &ListCommand{}, nil
+}
 
 func (c *ListCommand) Execute(repo storage.TaskRepository) error {
 
