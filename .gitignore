@@ -4,3 +4,8 @@
 *.dll
 *.bin
 *.out
+/todo
+/todo-cli
+*.dll
+bin/
+out/
