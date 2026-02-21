@@ -3,7 +3,6 @@ package commands
 import (
 	"flag"
 	"todo/internal/app"
-	"todo/internal/storage"
 )
 
 type RemoveCommand struct {
@@ -30,7 +29,7 @@ func NewRemoveCommand(args []string) (app.Command, error) {
 	return &RemoveCommand{id: id}, nil
 }
 
-func (cmd RemoveCommand) Execute(repo storage.TaskRepository) error {
+func (cmd RemoveCommand) Execute(repo app.TaskRepository) error {
 
 	tasks, err := repo.Load()
 	if err != nil {

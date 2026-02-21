@@ -3,7 +3,6 @@ package commands
 import (
 	"flag"
 	"todo/internal/app"
-	"todo/internal/storage"
 )
 
 type DoneCommand struct {
@@ -30,7 +29,7 @@ func NewDoneCommand(args []string) (app.Command, error) {
 	return &DoneCommand{id: id}, nil
 }
 
-func (cmd *DoneCommand) Execute(repo storage.TaskRepository) error {
+func (cmd *DoneCommand) Execute(repo app.TaskRepository) error {
 
 	tasks, err := repo.Load()
 	if err != nil {

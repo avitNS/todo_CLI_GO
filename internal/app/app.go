@@ -1,14 +1,10 @@
 package app
 
-import (
-	"todo/internal/storage"
-)
-
 type App struct {
-	repo storage.TaskRepository
+	repo TaskRepository
 }
 
-func NewApp(repo storage.TaskRepository) *App {
+func NewApp(repo TaskRepository) *App {
 	return &App{repo: repo}
 }
 

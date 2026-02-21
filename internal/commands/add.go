@@ -5,7 +5,6 @@ import (
 	"time"
 	"todo/internal/app"
 	"todo/internal/model"
-	"todo/internal/storage"
 )
 
 type AddCommand struct {
@@ -33,7 +32,7 @@ func NewAddCommand(args []string) (app.Command, error) {
 	return &AddCommand{title: title}, nil
 }
 
-func (cmd *AddCommand) Execute(repo storage.TaskRepository) error {
+func (cmd *AddCommand) Execute(repo app.TaskRepository) error {
 
 	tasks, err := repo.Load()
 
