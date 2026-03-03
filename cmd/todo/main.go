@@ -7,9 +7,9 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"todo/internal/app"
 	"todo/internal/config"
 	"todo/internal/parser"
+	"todo/internal/service"
 	"todo/internal/storage"
 )
 
@@ -22,11 +22,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	st := storage.NewFileStorage(cfg.StoragePath)
-
-	app := app.NewApp(st)
-
-	cmd, err := parser.ParseArgs(commandArgs)
+	repo := storage.NewFileStorage(cfg.StoragePath)
+	service := service.NewTaskService(repo)
+	cmd, err := parser.ParseArgs(commandArgs, service)
 	if err != nil {
 		logger.Error("Failed command", "error", err)
 		os.Exit(1)
@@ -38,13 +36,12 @@ func main() {
 	done := make(chan error, 1)
 
 	go func() {
-		done <- app.Execute(cmd)
+		done <- cmd.Execute(ctx)
 	}()
 
 	select {
 	case <-ctx.Done():
 		logger.Info("Received termination signal, exiting")
-		os.Exit(1)
 	case err := <-done:
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)

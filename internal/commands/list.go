@@ -1,36 +1,19 @@
 package commands
 
 import (
-	"fmt"
-	"todo/internal/app"
+	"context"
+	"todo/internal/service"
 )
 
-type ListCommand struct{}
-
-func NewListCommand(args []string) (app.Command, error) {
-	return &ListCommand{}, nil
+type ListCommand struct {
+	service *service.TaskService
 }
 
-func (c *ListCommand) Execute(repo app.TaskRepository) error {
+func NewListCommand(args []string, service *service.TaskService) (service.Command, error) {
+	return &ListCommand{service: service}, nil
+}
 
-	tasks, err := repo.Load()
-	if err != nil {
-		return err
-	}
+func (cmd *ListCommand) Execute(ctx context.Context) error {
 
-	if len(tasks) == 0 {
-		fmt.Printf("No tasks\n")
-		return nil
-	}
-
-	for _, t := range tasks {
-
-		done := "[]"
-		if t.Done {
-			done = "[x]"
-		}
-		fmt.Printf("%d %v %v\n", t.ID, done, t.Title)
-	}
-
-	return nil
+	return cmd.service.List(ctx)
 }

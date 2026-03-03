@@ -1,15 +1,17 @@
 package commands
 
 import (
+	"context"
 	"flag"
-	"todo/internal/app"
+	"todo/internal/service"
 )
 
 type RemoveCommand struct {
-	id int
+	service *service.TaskService
+	id      int
 }
 
-func NewRemoveCommand(args []string) (app.Command, error) {
+func NewRemoveCommand(args []string, service *service.TaskService) (service.Command, error) {
 	if len(args) == 0 {
 		return nil, ErrMissingID
 	}
@@ -26,24 +28,10 @@ func NewRemoveCommand(args []string) (app.Command, error) {
 		return nil, ErrMissingID
 	}
 
-	return &RemoveCommand{id: id}, nil
+	return &RemoveCommand{id: id, service: service}, nil
 }
 
-func (cmd RemoveCommand) Execute(repo app.TaskRepository) error {
+func (cmd RemoveCommand) Execute(ctx context.Context) error {
 
-	tasks, err := repo.Load()
-	if err != nil {
-		return err
-	}
-
-	for i, t := range tasks {
-		if t.ID == cmd.id {
-			tasks = append(tasks[:i], tasks[i+1:]...)
-			if err = repo.Save(tasks); err != nil {
-				return err
-			}
-		}
-	}
-
-	return nil
+	return cmd.service.Remove(ctx, cmd.id)
 }

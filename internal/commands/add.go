@@ -1,17 +1,17 @@
 package commands
 
 import (
+	"context"
 	"flag"
-	"time"
-	"todo/internal/app"
-	"todo/internal/model"
+	"todo/internal/service"
 )
 
 type AddCommand struct {
-	title string
+	service *service.TaskService
+	title   string
 }
 
-func NewAddCommand(args []string) (app.Command, error) {
+func NewAddCommand(args []string, service *service.TaskService) (service.Command, error) {
 	if len(args) == 0 {
 		return nil, ErrMissingTitle
 	}
@@ -29,34 +29,11 @@ func NewAddCommand(args []string) (app.Command, error) {
 		return nil, ErrMissingTitle
 	}
 
-	return &AddCommand{title: title}, nil
+	return &AddCommand{title: title, service: service}, nil
 }
 
-func (cmd *AddCommand) Execute(repo app.TaskRepository) error {
+func (cmd *AddCommand) Execute(ctx context.Context) error {
 
-	tasks, err := repo.Load()
-
-	if err != nil {
-		return err
-	}
-	maxID := 0
-	for _, t := range tasks {
-		if t.ID > maxID {
-			maxID = t.ID
-		}
-	}
-
-	tasks = append(tasks, model.Task{
-		ID:      maxID + 1,
-		Title:   cmd.title,
-		Done:    false,
-		Created: time.Now(),
-	})
-
-	if err = repo.Save(tasks); err != nil {
-		return err
-	}
-
-	return nil
+	return cmd.service.Add(ctx, cmd.title)
 
 }

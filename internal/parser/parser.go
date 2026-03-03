@@ -2,11 +2,11 @@ package parser
 
 import (
 	"os"
-	"todo/internal/app"
 	"todo/internal/commands"
+	"todo/internal/service"
 )
 
-func ParseArgs(args []string) (app.Command, error) {
+func ParseArgs(args []string, service *service.TaskService) (service.Command, error) {
 
 	if len(args) == 0 {
 		return nil, ErrUnknownCommand
@@ -22,6 +22,6 @@ func ParseArgs(args []string) (app.Command, error) {
 		return nil, ErrUnknownCommand
 	}
 
-	return cmd(args[1:])
+	return cmd(args[1:], service)
 
 }
