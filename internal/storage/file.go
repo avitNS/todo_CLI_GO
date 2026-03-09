@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"context"
 	"encoding/json"
 	"os"
 	"todo/internal/model"
@@ -14,7 +15,12 @@ func NewFileStorage(path string) *FileStorage {
 	return &FileStorage{path: path}
 }
 
-func (file *FileStorage) Load() ([]model.Task, error) {
+func (file *FileStorage) Load(ctx context.Context) ([]model.Task, error) {
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+	}
 
 	f, err := os.ReadFile(file.path)
 	if err != nil {
@@ -32,7 +38,12 @@ func (file *FileStorage) Load() ([]model.Task, error) {
 	return tasks, nil
 }
 
-func (file *FileStorage) Save(tasks []model.Task) error {
+func (file *FileStorage) Save(ctx context.Context, tasks []model.Task) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+	}
 
 	buf, err := json.MarshalIndent(tasks, "", "	")
 	if err != nil {

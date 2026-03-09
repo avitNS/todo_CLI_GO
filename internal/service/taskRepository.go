@@ -1,8 +1,11 @@
 package service
 
-import "todo/internal/model"
+import (
+	"context"
+	"todo/internal/model"
+)
 
 type TaskRepository interface {
-	Save([]model.Task) error
-	Load() ([]model.Task, error)
+	Save(context.Context, []model.Task) error
+	Load(context.Context) ([]model.Task, error)
 }
