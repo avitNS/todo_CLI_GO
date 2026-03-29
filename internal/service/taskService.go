@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"todo/internal/model"
 )
 
@@ -43,6 +44,86 @@ func (s *TaskService) Add(ctx context.Context, title string) error {
 	return s.repo.Save(ctx, tasks)
 }
 
-func (s *TaskService) Done(ctx context.Context, id int) error
-func (s *TaskService) Remove(ctx context.Context, id int) error
-func (s *TaskService) List(ctx context.Context) error
+func (s *TaskService) Done(ctx context.Context, id int) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
+	if id <= 0 {
+		return ErrMissingID
+	}
+
+	tasks, err := s.repo.Load(ctx)
+	if err != nil {
+		return err
+	}
+
+	foundIdx := -1
+	for i, t := range tasks {
+		if t.ID == id {
+			foundIdx = i
+			break
+		}
+	}
+
+	if foundIdx == -1 {
+		return ErrMissingID
+	}
+
+	tasks[foundIdx].Done = true
+
+	return s.repo.Save(ctx, tasks)
+
+}
+
+func (s *TaskService) Remove(ctx context.Context, id int) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
+	if id <= 0 {
+		return ErrMissingID
+	}
+
+	tasks, err := s.repo.Load(ctx)
+	if err != nil {
+		return err
+	}
+
+	foundIdx := -1
+	for i, t := range tasks {
+		if t.ID == id {
+			foundIdx = i
+			break
+		}
+	}
+
+	if foundIdx == -1 {
+		return ErrMissingID
+	}
+
+	tasks = append(tasks[:foundIdx], tasks[foundIdx+1:]...)
+
+	return s.repo.Save(ctx, tasks)
+}
+func (s *TaskService) List(ctx context.Context) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
+	tasks, err := s.repo.Load(ctx)
+	if err != nil {
+		return err
+	}
+
+	for _, t := range tasks {
+		flagDone := "| |"
+		if t.Done {
+			flagDone = "|x|"
+		}
+		fmt.Printf("%d - %v %v\n", t.ID, t.Title, flagDone)
+	}
+
+	return nil
+
+}
