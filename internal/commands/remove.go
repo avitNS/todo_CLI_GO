@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"flag"
+	"fmt"
 	"todo/internal/service"
 )
 
@@ -13,7 +14,7 @@ type RemoveCommand struct {
 
 func NewRemoveCommand(args []string, service *service.TaskService) (service.Command, error) {
 	if len(args) == 0 {
-		return nil, ErrMissingID
+		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingID)
 	}
 
 	var id int
@@ -21,11 +22,11 @@ func NewRemoveCommand(args []string, service *service.TaskService) (service.Comm
 	fs.IntVar(&id, "id", 0, "task id")
 
 	if err := fs.Parse(args); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("command: failed to parse command: %w", err)
 	}
 
 	if id <= 0 {
-		return nil, ErrMissingID
+		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingID)
 	}
 
 	return &RemoveCommand{id: id, service: service}, nil

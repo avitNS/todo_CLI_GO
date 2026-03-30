@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"flag"
+	"fmt"
 	"todo/internal/service"
 )
 
@@ -13,7 +14,7 @@ type DoneCommand struct {
 
 func NewDoneCommand(args []string, service *service.TaskService) (service.Command, error) {
 	if len(args) == 0 {
-		return nil, ErrMissingID
+		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingID)
 	}
 
 	var id int
@@ -25,7 +26,7 @@ func NewDoneCommand(args []string, service *service.TaskService) (service.Comman
 	}
 
 	if id <= 0 {
-		return nil, ErrMissingID
+		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingID)
 	}
 
 	return &DoneCommand{id: id, service: service}, nil

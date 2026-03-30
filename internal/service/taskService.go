@@ -20,12 +20,12 @@ func (s *TaskService) Add(ctx context.Context, title string) error {
 	}
 
 	if title == "" {
-		return ErrMissingTitle
+		return fmt.Errorf("command: failed to add task: %w", ErrMissingTitle)
 	}
 
 	tasks, err := s.repo.Load(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("command: failed to load tasks: %w", err)
 	}
 
 	newID := 1
@@ -50,12 +50,12 @@ func (s *TaskService) Done(ctx context.Context, id int) error {
 	}
 
 	if id <= 0 {
-		return ErrMissingID
+		return fmt.Errorf("command: failed to add task: %w", ErrMissingID)
 	}
 
 	tasks, err := s.repo.Load(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("command: failed to load tasks: %w", err)
 	}
 
 	foundIdx := -1
@@ -67,7 +67,7 @@ func (s *TaskService) Done(ctx context.Context, id int) error {
 	}
 
 	if foundIdx == -1 {
-		return ErrMissingID
+		return fmt.Errorf("command: failed to add task: %w", ErrMissingID)
 	}
 
 	tasks[foundIdx].Done = true
@@ -82,12 +82,12 @@ func (s *TaskService) Remove(ctx context.Context, id int) error {
 	}
 
 	if id <= 0 {
-		return ErrMissingID
+		return fmt.Errorf("command: failed to add task: %w", ErrMissingID)
 	}
 
 	tasks, err := s.repo.Load(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("command: failed to load tasks: %w", err)
 	}
 
 	foundIdx := -1
@@ -99,13 +99,14 @@ func (s *TaskService) Remove(ctx context.Context, id int) error {
 	}
 
 	if foundIdx == -1 {
-		return ErrMissingID
+		return fmt.Errorf("command: failed to add task: %w", ErrMissingID)
 	}
 
 	tasks = append(tasks[:foundIdx], tasks[foundIdx+1:]...)
 
 	return s.repo.Save(ctx, tasks)
 }
+
 func (s *TaskService) List(ctx context.Context) error {
 	if err := ctx.Err(); err != nil {
 		return err
@@ -113,7 +114,7 @@ func (s *TaskService) List(ctx context.Context) error {
 
 	tasks, err := s.repo.Load(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("command: failed to load tasks: %w", err)
 	}
 
 	for _, t := range tasks {

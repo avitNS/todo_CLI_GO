@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"flag"
+	"fmt"
 	"todo/internal/service"
 )
 
@@ -13,7 +14,7 @@ type AddCommand struct {
 
 func NewAddCommand(args []string, service *service.TaskService) (service.Command, error) {
 	if len(args) == 0 {
-		return nil, ErrMissingTitle
+		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingTitle)
 	}
 
 	var title string
@@ -22,11 +23,11 @@ func NewAddCommand(args []string, service *service.TaskService) (service.Command
 	fs.StringVar(&title, "title", "", "task title")
 
 	if err := fs.Parse(args); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("command: failed to parse command: %w", err)
 	}
 
 	if title == "" {
-		return nil, ErrMissingTitle
+		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingTitle)
 	}
 
 	return &AddCommand{title: title, service: service}, nil
