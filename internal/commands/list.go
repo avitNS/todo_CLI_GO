@@ -2,6 +2,7 @@ package commands
 
 import (
 	"context"
+	"fmt"
 	"todo/internal/service"
 )
 
@@ -15,5 +16,19 @@ func NewListCommand(args []string, service *service.TaskService) (service.Comman
 
 func (cmd *ListCommand) Execute(ctx context.Context) error {
 
-	return cmd.service.List(ctx)
+	tasks, err := cmd.service.List(ctx)
+
+	if err != nil {
+		return fmt.Errorf("command: error to load tasks list: %w", err)
+	}
+
+	for _, t := range tasks {
+		flagDone := "| |"
+		if t.Done {
+			flagDone = "|x|"
+		}
+		fmt.Printf("%d - %v %v\n", t.ID, t.Title, flagDone)
+	}
+
+	return nil
 }

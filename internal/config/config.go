@@ -2,6 +2,7 @@ package config
 
 import (
 	"flag"
+	"fmt"
 	"os"
 )
 
@@ -15,7 +16,9 @@ func Load(args []string) (*Config, []string, error) {
 	fs := flag.NewFlagSet("global", flag.ContinueOnError)
 	fs.StringVar(&file, "file", "", "storage path")
 
-	_ = fs.Parse(args)
+	if err := fs.Parse(args); err != nil {
+		return nil, nil, fmt.Errorf("config: failed to parse flags: %w", err)
+	}
 
 	path := resolveStoragePath(file)
 

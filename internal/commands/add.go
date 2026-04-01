@@ -14,7 +14,7 @@ type AddCommand struct {
 
 func NewAddCommand(args []string, service *service.TaskService) (service.Command, error) {
 	if len(args) == 0 {
-		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingTitle)
+		return nil, fmt.Errorf("command: args are empty: %w", ErrMissingTitle)
 	}
 
 	var title string
@@ -27,7 +27,7 @@ func NewAddCommand(args []string, service *service.TaskService) (service.Command
 	}
 
 	if title == "" {
-		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingTitle)
+		return nil, fmt.Errorf("command: failed to add task: %w", ErrInvalidTitle)
 	}
 
 	return &AddCommand{title: title, service: service}, nil

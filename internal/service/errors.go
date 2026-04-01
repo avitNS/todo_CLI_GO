@@ -3,6 +3,6 @@ package service
 import "errors"
 
 var (
-	ErrMissingTitle = errors.New("Title is missing")
-	ErrMissingID    = errors.New("ID is incorrect")
+	ErrInvalidTitle = errors.New("title is incorrect")
+	ErrInvalidID    = errors.New("id is incorrect")
 )

@@ -14,7 +14,7 @@ type RemoveCommand struct {
 
 func NewRemoveCommand(args []string, service *service.TaskService) (service.Command, error) {
 	if len(args) == 0 {
-		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingID)
+		return nil, fmt.Errorf("command: args are empty: %w", ErrMissingID)
 	}
 
 	var id int
@@ -26,13 +26,13 @@ func NewRemoveCommand(args []string, service *service.TaskService) (service.Comm
 	}
 
 	if id <= 0 {
-		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingID)
+		return nil, fmt.Errorf("command: failed to remove task: %w", ErrInvalidID)
 	}
 
 	return &RemoveCommand{id: id, service: service}, nil
 }
 
-func (cmd RemoveCommand) Execute(ctx context.Context) error {
+func (cmd *RemoveCommand) Execute(ctx context.Context) error {
 
 	return cmd.service.Remove(ctx, cmd.id)
 }

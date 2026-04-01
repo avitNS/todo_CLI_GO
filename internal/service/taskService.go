@@ -20,7 +20,7 @@ func (s *TaskService) Add(ctx context.Context, title string) error {
 	}
 
 	if title == "" {
-		return fmt.Errorf("command: failed to add task: %w", ErrMissingTitle)
+		return fmt.Errorf("command: failed to add task: %w", ErrInvalidTitle)
 	}
 
 	tasks, err := s.repo.Load(ctx)
@@ -50,7 +50,7 @@ func (s *TaskService) Done(ctx context.Context, id int) error {
 	}
 
 	if id <= 0 {
-		return fmt.Errorf("command: failed to add task: %w", ErrMissingID)
+		return fmt.Errorf("command: failed to add task: %w", ErrInvalidID)
 	}
 
 	tasks, err := s.repo.Load(ctx)
@@ -67,7 +67,7 @@ func (s *TaskService) Done(ctx context.Context, id int) error {
 	}
 
 	if foundIdx == -1 {
-		return fmt.Errorf("command: failed to add task: %w", ErrMissingID)
+		return fmt.Errorf("command: failed to add task: %w", ErrInvalidID)
 	}
 
 	tasks[foundIdx].Done = true
@@ -82,7 +82,7 @@ func (s *TaskService) Remove(ctx context.Context, id int) error {
 	}
 
 	if id <= 0 {
-		return fmt.Errorf("command: failed to add task: %w", ErrMissingID)
+		return fmt.Errorf("command: failed to add task: %w", ErrInvalidID)
 	}
 
 	tasks, err := s.repo.Load(ctx)
@@ -99,7 +99,7 @@ func (s *TaskService) Remove(ctx context.Context, id int) error {
 	}
 
 	if foundIdx == -1 {
-		return fmt.Errorf("command: failed to add task: %w", ErrMissingID)
+		return fmt.Errorf("command: failed to add task: %w", ErrInvalidID)
 	}
 
 	tasks = append(tasks[:foundIdx], tasks[foundIdx+1:]...)
@@ -107,14 +107,14 @@ func (s *TaskService) Remove(ctx context.Context, id int) error {
 	return s.repo.Save(ctx, tasks)
 }
 
-func (s *TaskService) List(ctx context.Context) error {
+func (s *TaskService) List(ctx context.Context) ([]model.Task, error) {
 	if err := ctx.Err(); err != nil {
-		return err
+		return nil, err
 	}
 
 	tasks, err := s.repo.Load(ctx)
 	if err != nil {
-		return fmt.Errorf("command: failed to load tasks: %w", err)
+		return nil, fmt.Errorf("command: failed to load tasks: %w", err)
 	}
 
 	for _, t := range tasks {
@@ -125,6 +125,6 @@ func (s *TaskService) List(ctx context.Context) error {
 		fmt.Printf("%d - %v %v\n", t.ID, t.Title, flagDone)
 	}
 
-	return nil
+	return tasks, nil
 
 }

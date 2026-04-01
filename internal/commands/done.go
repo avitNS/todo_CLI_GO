@@ -14,7 +14,7 @@ type DoneCommand struct {
 
 func NewDoneCommand(args []string, service *service.TaskService) (service.Command, error) {
 	if len(args) == 0 {
-		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingID)
+		return nil, fmt.Errorf("command: args are empty: %w", ErrMissingID)
 	}
 
 	var id int
@@ -22,11 +22,11 @@ func NewDoneCommand(args []string, service *service.TaskService) (service.Comman
 	fs.IntVar(&id, "id", 0, "task id")
 
 	if err := fs.Parse(args); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("command: failed to parse command: %w", err)
 	}
 
 	if id <= 0 {
-		return nil, fmt.Errorf("command: failed to add task: %w", ErrMissingID)
+		return nil, fmt.Errorf("command: failed to done task: %w", ErrInvalidID)
 	}
 
 	return &DoneCommand{id: id, service: service}, nil

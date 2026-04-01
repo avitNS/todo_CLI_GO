@@ -3,6 +3,8 @@ package commands
 import "errors"
 
 var (
-	ErrMissingTitle = errors.New("Title is missing")
-	ErrMissingID    = errors.New("ID is incorrect")
+	ErrInvalidTitle = errors.New("title is invalid")
+	ErrMissingTitle = errors.New("title is missing")
+	ErrInvalidID    = errors.New("id is invalid")
+	ErrMissingID    = errors.New("id is missing")
 )
