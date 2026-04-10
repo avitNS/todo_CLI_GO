@@ -6,7 +6,7 @@ import (
 	"todo/internal/service"
 )
 
-func ParseArgs(args []string, service *service.TaskService) (service.Command, error) {
+func ParseArgs(args []string, service service.Service) (service.Command, error) {
 
 	if len(args) == 0 {
 		return nil, fmt.Errorf("parser: no command: %w", ErrMissingCommand)

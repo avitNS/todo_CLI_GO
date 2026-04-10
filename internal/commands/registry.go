@@ -4,7 +4,7 @@ import (
 	"todo/internal/service"
 )
 
-type CommandFactory func([]string, *service.TaskService) (service.Command, error)
+type CommandFactory func([]string, service.Service) (service.Command, error)
 
 var Registry = map[string]CommandFactory{
 	"add":    NewAddCommand,

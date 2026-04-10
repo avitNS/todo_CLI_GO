@@ -8,11 +8,11 @@ import (
 )
 
 type AddCommand struct {
-	service *service.TaskService
+	service service.Service
 	title   string
 }
 
-func NewAddCommand(args []string, service *service.TaskService) (service.Command, error) {
+func NewAddCommand(args []string, service service.Service) (service.Command, error) {
 	if len(args) == 0 {
 		return nil, fmt.Errorf("command: args are empty: %w", ErrMissingTitle)
 	}

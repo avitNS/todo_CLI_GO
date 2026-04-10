@@ -8,11 +8,11 @@ import (
 )
 
 type DoneCommand struct {
-	service *service.TaskService
+	service service.Service
 	id      int
 }
 
-func NewDoneCommand(args []string, service *service.TaskService) (service.Command, error) {
+func NewDoneCommand(args []string, service service.Service) (service.Command, error) {
 	if len(args) == 0 {
 		return nil, fmt.Errorf("command: args are empty: %w", ErrMissingID)
 	}

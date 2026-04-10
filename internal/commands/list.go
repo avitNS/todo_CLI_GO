@@ -7,10 +7,10 @@ import (
 )
 
 type ListCommand struct {
-	service *service.TaskService
+	service service.Service
 }
 
-func NewListCommand(args []string, service *service.TaskService) (service.Command, error) {
+func NewListCommand(args []string, service service.Service) (service.Command, error) {
 	return &ListCommand{service: service}, nil
 }
 

@@ -44,8 +44,7 @@ func main() {
 		logger.Info("Received termination signal, exiting")
 	case err := <-done:
 		if err != nil {
-			fmt.Printf("Error: %v\n", err)
-			logger.Error("Failed execute", "error", err)
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
 	}

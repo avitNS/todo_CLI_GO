@@ -8,11 +8,11 @@ import (
 )
 
 type RemoveCommand struct {
-	service *service.TaskService
+	service service.Service
 	id      int
 }
 
-func NewRemoveCommand(args []string, service *service.TaskService) (service.Command, error) {
+func NewRemoveCommand(args []string, service service.Service) (service.Command, error) {
 	if len(args) == 0 {
 		return nil, fmt.Errorf("command: args are empty: %w", ErrMissingID)
 	}
