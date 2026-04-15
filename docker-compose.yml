@@ -1,6 +1,8 @@
 services:
   todo-cli:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     environment:
       - TODO_STORAGE_PATH=/app/data/tasks.json
     volumes:
