@@ -36,5 +36,5 @@ func resolveStoragePath(file string) string {
 		return env
 	}
 
-	return "tasks"
+	return "tasks.json"
 }

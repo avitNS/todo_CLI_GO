@@ -1,0 +1,7 @@
+services:
+  todo-cli:
+    build: .
+    environment:
+      - TODO_STORAGE_PATH=/app/data/tasks.json
+    volumes:
+      - ./:/app/data
